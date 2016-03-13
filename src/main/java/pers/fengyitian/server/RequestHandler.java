@@ -15,9 +15,24 @@ public class RequestHandler implements Handler{
 	private Request request = null;//表示http请求
 	
 	private Response response = null;//表示http响应
+
+	public RequestHandler(ChannelIO channelIO){
+		this.channelIO = channelIO;
+	}
+	
+	private boolean receive(SelectionKey sk) throws IOException{
+		
+		ByteBuffer tmp = null;
+		
+		if(requestReceived) return true;//如果已经接受到http请求的所有数据，就返回true
+		
+		if((channelIO.read() < 0) || Req){
+			
+		}
+	}
+	
 	
 	public void handle(SelectionKey key) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
