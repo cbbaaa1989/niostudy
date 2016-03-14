@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 
-import javax.swing.text.StringContent;
-
 public class RequestHandler implements Handler{
 
 	private ChannelIO channelIO;

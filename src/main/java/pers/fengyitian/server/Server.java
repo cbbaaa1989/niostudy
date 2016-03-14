@@ -139,7 +139,13 @@ public class Server {
 		 * @return
 		 */
 		public String decode(ByteBuffer buffer){
-			
+			try {
+				Request request = Request.parse(buffer);
+				return request.toString();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
 		}
 		
 		/**
@@ -148,12 +154,12 @@ public class Server {
 		 * @return
 		 */
 		public ByteBuffer encode(String str){
-			
+			return ByteBuffer.wrap(str.getBytes());
 		}
 		
 		
 		public void service() throws IOException{
-			ssc.register(selector, SelectionKey.OP_ACCEPT, att);//注册接受连接就绪事件
+			ssc.register(selector, SelectionKey.OP_ACCEPT, new AcceptHandler());//注册接受连接就绪事件
 			for(;;){
 				int n = selector.select();
 				
@@ -169,7 +175,7 @@ public class Server {
 					try{
 						key = (SelectionKey)it.next();
 						it.remove();
-						final Handler handler = (Handler)key.attachment();
+						final pers.fengyitian.server.Handler handler = (pers.fengyitian.server.Handler)key.attachment();
 						handler.handle(key);
 						
 						

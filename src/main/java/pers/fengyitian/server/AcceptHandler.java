@@ -21,6 +21,11 @@ public class AcceptHandler implements Handler{
 				+ socketChannel.socket().getPort());
 		ChannelIO cio = new ChannelIO(socketChannel,false);
 		
+		RequestHandler rh = new RequestHandler(cio);
+		//注册读就绪事件，把requesthandler作为附件
+		//当这种事件发生时，将有requesthandler处理该事件
+		socketChannel.register(key.selector(), SelectionKey.OP_READ, rh);
+		
 	}
 
 }
