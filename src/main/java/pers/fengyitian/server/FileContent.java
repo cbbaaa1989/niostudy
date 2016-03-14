@@ -16,7 +16,7 @@ import java.nio.channels.FileChannel;
 public class FileContent implements Content{
 
 	//假定文件的根目录是“root,该目录应该位于classpath下
-	private static File ROOT = new File("root");
+	private static File ROOT = new File(".");
 	
 	private File file;
 	

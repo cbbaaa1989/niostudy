@@ -148,7 +148,7 @@ public class Request {
 	  */
 	 private static Pattern requestPattern = 
 			 
-			 Pattern.compile("\\A([A-Z]+)+([^])+HTTP/([0-9\\.]+)$"
+			 Pattern.compile("\\A([A-Z]+)+([^]+)+HTTP/([0-9\\.]+)$"
 					 			+ ".*^Host:([^]+)$.*\r\n\r\n\\z",
 					 			Pattern.MULTILINE | Pattern.DOTALL);
 	 

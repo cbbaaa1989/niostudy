@@ -21,9 +21,7 @@ public class RequestHandler implements Handler{
 	}
 	
 	private boolean receive(SelectionKey sk) throws IOException{
-		
-		ByteBuffer tmp = null;
-		
+
 		if(requestReceived) return true;//如果已经接受到http请求的所有数据，就返回true
 		
 		if((channelIO.read() < 0) || Request.isComplete(channelIO.getReadBuf())){
