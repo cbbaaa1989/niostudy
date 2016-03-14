@@ -33,7 +33,7 @@ public class FileContent implements Content{
 					uri.getPath().replace('/', File.separatorChar));
 	}
 	
-	
+	@Override
 	public void prepare() throws IOException {
 
 		if(fileChannel == null)
@@ -46,6 +46,7 @@ public class FileContent implements Content{
 	/**
 	 * 发送正文，如果发送完毕，就返回false,否则就返回true
 	 */
+	@Override
 	public boolean send(ChannelIO cio) throws IOException {
 
 		if(fileChannel == null){
@@ -64,7 +65,7 @@ public class FileContent implements Content{
 		position += cio.transferTo(fileChannel, position, length - position);
 		return position < length;
 	}
-	
+	@Override
 	public void release() throws IOException {
 
 		if(fileChannel != null){
@@ -72,7 +73,7 @@ public class FileContent implements Content{
 			fileChannel = null;
 		}
 	}
-
+	@Override
 	public String type() {
 		if(type != null){
 			return type;
@@ -90,7 +91,7 @@ public class FileContent implements Content{
 		}
 		return type;
 	}
-
+	@Override
 	public long length() {
 		return length;
 	}

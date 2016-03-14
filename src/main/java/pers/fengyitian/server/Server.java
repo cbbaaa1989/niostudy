@@ -36,8 +36,53 @@ public class Server {
 	private Selector selector = null;
 
 	private ExecutorService executorService = Executors.newCachedThreadPool();
-	public Server(int port){
+	public Server(int port) throws IOException{
 		this.port = port;
+		ssc = ServerSocketChannel.open();
+		ssc.bind(new InetSocketAddress(port));
+		selector = Selector.open();
+		ssc.configureBlocking(false);
+	}
+	
+	
+	public void service() throws IOException{
+		ssc.register(selector, SelectionKey.OP_ACCEPT, new AcceptHandler());//注册接受连接就绪事件
+		for(;;){
+			int n = selector.select();
+			
+			if(n == 0){
+				continue;
+			}
+			
+			Set<SelectionKey> readyKeys = selector.selectedKeys();
+			Iterator<SelectionKey> it = readyKeys.iterator();
+			while(it.hasNext()){
+				SelectionKey key = null;
+				
+				try{
+					key = (SelectionKey)it.next();
+					it.remove();
+					final pers.fengyitian.server.Handler handler = (pers.fengyitian.server.Handler)key.attachment();
+					handler.handle(key);
+					
+					
+				}catch(IOException e){
+					
+					e.printStackTrace();
+					try{
+						if(key != null){
+							key.cancel();
+							key.channel().close();
+						}
+					}catch(IOException ex){
+						ex.printStackTrace();
+					}
+					
+				}
+				
+				
+			}
+		}
 		
 	}
 	
@@ -158,45 +203,6 @@ public class Server {
 		}
 		
 		
-		public void service() throws IOException{
-			ssc.register(selector, SelectionKey.OP_ACCEPT, new AcceptHandler());//注册接受连接就绪事件
-			for(;;){
-				int n = selector.select();
-				
-				if(n == 0){
-					continue;
-				}
-				
-				Set<SelectionKey> readyKeys = selector.selectedKeys();
-				Iterator<SelectionKey> it = readyKeys.iterator();
-				while(it.hasNext()){
-					SelectionKey key = null;
-					
-					try{
-						key = (SelectionKey)it.next();
-						it.remove();
-						final pers.fengyitian.server.Handler handler = (pers.fengyitian.server.Handler)key.attachment();
-						handler.handle(key);
-						
-						
-					}catch(IOException e){
-						
-						e.printStackTrace();
-						try{
-							if(key != null){
-								key.cancel();
-								key.channel().close();
-							}
-						}catch(IOException ex){
-							ex.printStackTrace();
-						}
-						
-					}
-					
-					
-				}
-			}
-			
-		}
+		
 	}
 }
