@@ -133,24 +133,7 @@ public class Request {
 		 
 	 }
 	 
-	 /**
-	  * 设定用于解析HTTP请求的字符串匹配模式。对于以下形式的http请求
-	  * 
-	  *  GET /dir/file HTTP/1.1
-	  *  Host:hostname
-	  *  
-	  *  将被解析成
-	  *  
-	  *  group[1] = "GET"
-	  *  group[2] = "/dir/file"
-	  *  group[3] = "1.1"
-	  *  group[4] = "hostname"
-	  */
-	 private static Pattern requestPattern = 
-			 
-			 Pattern.compile("\\A([A-Z]+)+([^]+)+HTTP/([0-9\\.]+)$"
-					 			+ ".*^Host:([^]+)$.*\r\n\r\n\\z",
-					 			Pattern.MULTILINE | Pattern.DOTALL);
+	 
 	 
 	 public static Request parse(ByteBuffer bb) throws Exception{
 		 
@@ -161,9 +144,10 @@ public class Request {
 		 Matcher m = requestPattern.matcher(cb);//进行字符串匹配
 		 
 		 //如果http请求与指定的字符串模式不匹配，说明请求数据不正确
-		 if(!m.matches()){
+		 /*if(!m.matches()){
+			 System.out.println("http请求与指定的字符串模式不匹配");
 			 throw new Exception();
-		 }
+		 }*/
 
 		 Action a;
 		 
@@ -194,8 +178,38 @@ public class Request {
 		 
 	 }
 	 
+	 /**
+	  * 设定用于解析HTTP请求的字符串匹配模式。对于以下形式的http请求
+	  * 
+	  *  GET /dir/file HTTP/1.1
+	  *  Host:hostname
+	  *  
+	  *  将被解析成
+	  *  
+	  *  group[1] = "GET"
+	  *  group[2] = "/dir/file"
+	  *  group[3] = "1.1"
+	  *  group[4] = "hostname"
+	  */
+	 private static Pattern requestPattern = 
+			 
+			 Pattern.compile("\\A([A-Z]+)+([^ ]+)+HTTP/([0-9\\.]+)$"
+					 			+ ".*^Host:([^ ]+)$.*\r\n\r\n\\z",
+					 			Pattern.MULTILINE | Pattern.DOTALL);
 	 
-	 
+	 public static void main(String args[]){
+		 String httpRequest = 
+				"GET /index.html HTTP/1.1\r\n" +
+				"Host: localhost:8080\r\n" +
+				"User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:43.0) Gecko/20100101 Firefox/43.0\r\n" +
+				"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n" +
+				"Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3\r\n" +
+				"Accept-Encoding: gzip, deflate\r\n" +
+				"Connection: keep-alive\r\n";
+		 boolean match = Request.isComplete(ByteBuffer.wrap(httpRequest.getBytes()));
+		 
+		 System.out.println(match);
+	 }
 	 
 	 
 	 

@@ -78,6 +78,10 @@ public class Server {
 						ex.printStackTrace();
 					}
 					
+				}catch (Exception e) {
+					e.printStackTrace();
+					key.channel().register(selector, key.interestOps() | ~ SelectionKey.OP_READ);
+					System.out.println("unregister OP_READ");
 				}
 				
 				
