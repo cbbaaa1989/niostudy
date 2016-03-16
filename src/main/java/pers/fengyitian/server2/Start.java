@@ -46,16 +46,17 @@ public class Start {
 							
 							byteBuffer.flip();
 							
-							int  startJudge = 0;
-							outer : while(read(socketChannel, byteBuffer, selector) > 0){
-								inner : while(byteBuffer.hasRemaining()){
+							
+							 while(read(socketChannel, byteBuffer, selector) > 0){
+								while(byteBuffer.hasRemaining()){
 									char c = (char)byteBuffer.get();
-									if(c == '\r'){
-										startJudge ++ ;
-									}else if(c == '\n'){
-										
-									}else{
-										
+									if(c == '\n'){
+										int position = byteBuffer.position();
+										if(byteBuffer.get(position - 3) == '\r'
+										&& byteBuffer.get(position - 2) == '\n'
+										&& byteBuffer.get(position - 1) == '\r'){
+											key.interestOps() & ~ SelectionKey.OP_READ;
+										}
 									}
 								}
 								
