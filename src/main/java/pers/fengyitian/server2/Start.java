@@ -44,17 +44,29 @@ public class Start {
 							SocketChannel socketChannel = (SocketChannel)key.channel();
 							ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 							
-							while(socketChannel.read(byteBuffer) > 0){
-								
-								byteBuffer.flip();
-								byteBuffer.
-								
-								
-								if(byteBuffer.limit() == byteBuffer.capacity()){
-									
-									ByteBuffer.allocate(byteBuffer.capacity() * 2).put(byteBuffer);
+							byteBuffer.flip();
+							
+							int  startJudge = 0;
+							outer : while(read(socketChannel, byteBuffer, selector) > 0){
+								inner : while(byteBuffer.hasRemaining()){
+									char c = (char)byteBuffer.get();
+									if(c == '\r'){
+										startJudge ++ ;
+									}else if(c == '\n'){
+										
+									}else{
+										
+									}
 								}
+								
 							}
+							
+							
+							if(byteBuffer.limit() == byteBuffer.capacity()){
+								
+								ByteBuffer.allocate(byteBuffer.capacity() * 2).put(byteBuffer);
+							}
+						
 							
 						}
 					}
@@ -66,5 +78,10 @@ public class Start {
 		}
 		
 		
+	}
+	
+	private static int read(SocketChannel socketChannel,ByteBuffer byteBuffer,Selector selector) throws IOException{
+		int n = socketChannel.read(byteBuffer);
+		return n;
 	}
 }
