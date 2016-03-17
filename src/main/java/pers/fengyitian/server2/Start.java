@@ -1,9 +1,10 @@
 package pers.fengyitian.server2;
 
+import java.io.Console;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -51,24 +52,26 @@ public class Start {
 								while(byteBuffer.hasRemaining()){
 									char c = (char)byteBuffer.get();
 									if(c == '\n'){
-										int position = byteBuffer.position();
-										if(byteBuffer.get(position - 3) == '\r'
-										&& byteBuffer.get(position - 2) == '\n'
-										&& byteBuffer.get(position - 1) == '\r'){
-											key.interestOps() & ~ SelectionKey.OP_READ;
-										}
+//										int position = byteBuffer.position();
+//										if(byteBuffer.get(position - 3) == '\r'
+//										&& byteBuffer.get(position - 2) == '\n'
+//										&& byteBuffer.get(position - 1) == '\r'){
+//											key.interestOps() & ~ SelectionKey.OP_READ;
+//										}
+										socketChannel.register(selector, key.interestOps() | ~ SelectionKey.OP_READ);
+										
 									}
 								}
 								
+								if(byteBuffer.limit() == byteBuffer.capacity()){
+									
+									ByteBuffer.allocate(byteBuffer.capacity() * 2).put(byteBuffer);
+								}
 							}
-							
-							
-							if(byteBuffer.limit() == byteBuffer.capacity()){
-								
-								ByteBuffer.allocate(byteBuffer.capacity() * 2).put(byteBuffer);
-							}
-						
-							
+							 
+							 
+							socketChannel.write(byteBuffer);
+
 						}
 					}
 				}
@@ -78,6 +81,18 @@ public class Start {
 			
 		}
 		
+		
+		Console console = System.console();
+		if(console != null){
+			PrintWriter printWriter = console.writer();
+			printWriter.write("input:");  
+			console.flush(); 
+			
+			while(true){
+				String str= console.readLine();
+				
+			}
+		}
 		
 	}
 	
