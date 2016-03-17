@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.CharBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -36,7 +37,7 @@ public class Start {
 					while(true){
 						//System.out.println("server start select");
 						int n = selector.select();
-						//System.out.println("server select number : " + n);
+						System.out.println("server select number : " + n);
 						if(n > 0){
 							System.out.println("server select number : " + n);
 							Set<SelectionKey> selectedKeys = selector.selectedKeys();
@@ -72,7 +73,12 @@ public class Start {
 
 												//socketChannel.register(selector, key.interestOps() | ~ SelectionKey.OP_READ);
 												System.out.println("server start to write .....");
+												byteBuffer.flip();
 												socketChannel.write(byteBuffer);
+												
+//												socketChannel.register(selector, SelectionKey.OP_READ);
+//												selector.wakeup();
+												it.remove();
 											//}
 										}
 										
@@ -104,6 +110,7 @@ public class Start {
 				try {
 					SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("localhost",8080));
 					ByteBuffer readBuf = ByteBuffer.allocate(1024);
+					//readBuf.order(ByteOrder.BIG_ENDIAN);
 					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)) ;
 					while(true){
 						try {
@@ -119,9 +126,12 @@ public class Start {
 							System.out.println("client write time : " + (endWrite - startWrite) + 
 									" .write byte number : " + writen);
 							readBuf.clear();
-							socketChannel.read(readBuf);
-							System.out.println("client read time : " + (System.currentTimeMillis() - endWrite));
-							System.out.println(readBuf);
+							System.out.println("1. " + readBuf);
+							int readn = socketChannel.read(readBuf);
+							System.out.println("client read time : " + (System.currentTimeMillis() - endWrite)
+									+ " read number is : " + readn);
+							System.out.println("2. " + readBuf);
+							
 							readBuf.flip();
 							
 							System.out.println("read from server is : " + new String(readBuf.array()));
