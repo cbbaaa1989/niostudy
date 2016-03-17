@@ -19,7 +19,7 @@ public class MyConsole {
 	public static void main(String args[]){
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)) ;
-			CharBuffer charBuffer = CharBuffer.allocate(1024);
+			CharBuffer charBuffer = CharBuffer.allocate(1);
 			
 			outer : while(true){
 //				String s = reader.readLine();
@@ -45,6 +45,7 @@ public class MyConsole {
 				}
 				charBuffer.limit(charBuffer.capacity());
 				//charBuffer.compact();
+				
 				
 			}
 			System.out.println("end");
