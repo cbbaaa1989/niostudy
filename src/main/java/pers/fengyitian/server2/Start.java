@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
+import java.net.SocketOption;
+import java.net.SocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
@@ -56,6 +58,7 @@ public class Start {
 										socketChannel.register(selector, SelectionKey.OP_READ);
 										System.out.println("???????????");
 									}
+									it.remove();
 								}
 								if(key.isReadable()){
 									System.out.println("server start read ....");
