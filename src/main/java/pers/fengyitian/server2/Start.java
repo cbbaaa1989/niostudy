@@ -39,7 +39,7 @@ public class Start {
 					while(true){
 						//System.out.println("server start select");
 						int n = selector.select();
-						System.out.println("server select number : " + n);
+						//System.out.println("server select number : " + n);
 						if(n > 0){
 							System.out.println("server select number : " + n);
 							Set<SelectionKey> selectedKeys = selector.selectedKeys();
@@ -58,7 +58,7 @@ public class Start {
 										socketChannel.register(selector, SelectionKey.OP_READ);
 										System.out.println("???????????");
 									}
-									it.remove();
+									//it.remove();
 								}
 								if(key.isReadable()){
 									System.out.println("server start read ....");
@@ -81,7 +81,7 @@ public class Start {
 												
 //												socketChannel.register(selector, SelectionKey.OP_READ);
 //												selector.wakeup();
-												it.remove();
+												//it.remove();
 											//}
 										}
 										
@@ -94,7 +94,7 @@ public class Start {
 
 								}
 								
-								//it.remove();
+								it.remove();
 								System.out.println("end ....");
 							}
 						}

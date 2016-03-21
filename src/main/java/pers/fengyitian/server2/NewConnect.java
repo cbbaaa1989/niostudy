@@ -18,9 +18,9 @@ public class NewConnect {
 			Socket socket = new Socket("localhost", 8080);
 			System.out.println("connect to server ......哈哈哈哈哈");
 			socket.getOutputStream().write("尼玛(｡･∀･)ﾉﾞ嗨".getBytes());
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream())) ;
-//			char[] buf = new char[1024];
-//			int n = reader.read(buf);
+			//BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream())) ;
+			//char[] buf = new char[1024];
+			//int n = reader.read(buf);
 			
 			//reader.close();
 			socket.close();
