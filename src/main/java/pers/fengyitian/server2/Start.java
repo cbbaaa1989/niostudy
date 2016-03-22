@@ -106,7 +106,7 @@ public class Start {
 			}
 		}).start();
 		
-		new Thread(new Runnable() {
+		/*new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -149,7 +149,7 @@ public class Start {
 				}
 				
 			}
-		}).start();
+		}).start();*/
 		
 		
 	}
