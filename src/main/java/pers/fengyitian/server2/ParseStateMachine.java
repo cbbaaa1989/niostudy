@@ -6,17 +6,19 @@ public class ParseStateMachine {
 
 	public final static int url = 2;
 	
-	public final static int protocol = 3;
+	public final static int version = 3;
 	
-	public final static int header = 4;
+	public final static int header_name = 4;
+	
+	public final static int header_value = 5;
+	
+	public final static int endLine = 6;
+	
+	//public final static int endLine_n = 6;
 	
 	public int state = 1;
 	
-	public int state(){
-		return state;
-	}
-	
-	public void forward(){
+	public void goForward(){
 		state ++;
 	}
 }
